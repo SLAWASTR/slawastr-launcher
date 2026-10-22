@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- rutube mark -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path android:fillColor="#FF000000" android:pathData="M5 3h8c3.866 0 7 3.134 7 7 0 2.57-1.386 4.815-3.46 6.02L20.2 21h-4.1l-3.2-4.5H8.8V21H5V3zm3.8 3.5v6.5h4.2c1.933 0 3.5-1.455 3.5-3.25S14.933 6.5 13 6.5H8.8z" />
+</vector>

@@ -1,0 +1,13 @@
+package dev.plume
+
+import org.junit.Assert.assertArrayEquals
+import org.junit.Test
+
+class QrTest {
+    /** The worked example from the QR spec (ISO 18004 annex I): "01234567", version 1-M. */
+    @Test fun reedSolomon() {
+        val data = intArrayOf(0x10, 0x20, 0x0C, 0x56, 0x61, 0x80, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11, 0xEC, 0x11)
+        val ec = intArrayOf(0xA5, 0x24, 0xD4, 0xC1, 0xED, 0x36, 0xC7, 0x87, 0x2C, 0x55)
+        assertArrayEquals(ec, Qr.rs(data, 10))
+    }
+}

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sized in dp for a 960x540dp TV canvas (1080p and 4K both map to it). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F5F7">
+
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingStart="48dp"
+        android:paddingTop="27dp"
+        android:paddingEnd="48dp"
+        android:paddingBottom="32dp">
+        <!-- Bottom is a little more than the top: the last text line's box includes space under the letters,
+             so this makes the visible gap below Continue Watching match the gap above the clock. -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/clockCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:focusable="true">
+
+                <TextClock
+                    android:id="@+id/clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:format12Hour="h:mm"
+                    android:format24Hour="H:mm"
+                    android:includeFontPadding="false"
+                    android:textSize="22sp" />
+
+                <TextClock
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif"
+                    android:format12Hour="EEE d MMM"
+                    android:format24Hour="EEE d MMM"
+                    android:includeFontPadding="false"
+                    android:textSize="15sp" />
+
+                <!-- "14° Cloudy · Paris". Off unless turned on in launcher settings. -->
+                <TextView
+                    android:id="@+id/weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:alpha="0.75"
+                    android:fontFamily="sans-serif"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/wifi"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/network_settings"
+                android:focusable="true"
+                android:padding="9dp"
+                android:src="@drawable/ic_wifi" />
+
+            <ImageView
+                android:id="@+id/allAppsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/all_apps"
+                android:focusable="true"
+                android:padding="10dp"
+                android:src="@drawable/ic_apps" />
+
+            <ImageView
+                android:id="@+id/systemSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/settings"
+                android:focusable="true"
+                android:padding="9dp"
+                android:src="@drawable/ic_settings" />
+
+            <ImageView
+                android:id="@+id/launcherSettings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/plume_settings"
+                android:focusable="true"
+                android:padding="9dp"
+                android:src="@drawable/ic_tune" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Only shown while editing the row (it carries the instructions). -->
+        <TextView
+            android:id="@+id/appsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <!-- Both rows: the scroller reaches 16dp (one grid gap) past the content edges on each side and
+             clips there. That is room for the focus lift, while the next item, a gap away, stays hidden.
+             Same on left and right, and SnapScrollView scrolls by whole items. -->
+        <dev.plume.SnapScrollView
+            android:id="@+id/appScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-16dp"
+            android:layout_marginTop="-24dp"
+            android:layout_marginEnd="-16dp"
+            android:layout_marginBottom="-24dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="24dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/appRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:orientation="horizontal" />
+
+                <!-- Name of the focused app, slid under its tile (tvOS style). In the scroll content, so it scrolls along. -->
+                <TextView
+                    android:id="@+id/rowLabel"
+                    android:layout_width="200dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:alpha="0"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textSize="13sp" />
+
+                <!-- "App names: Always": every name under its tile, in place of rowLabel (same space). -->
+                <LinearLayout
+                    android:id="@+id/nameRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </dev.plume.SnapScrollView>
+
+        <TextView
+            android:id="@+id/watchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:alpha="0.7"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/continue_watching"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <dev.plume.SnapScrollView
+            android:id="@+id/watchScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-16dp"
+            android:layout_marginTop="-16dp"
+            android:layout_marginEnd="-16dp"
+            android:layout_marginBottom="-24dp"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="24dp"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/watchRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:orientation="horizontal" />
+        </dev.plume.SnapScrollView>
+    </LinearLayout>
+
+    <!-- All apps: hidden until the Apps tile is pressed; Back closes it. -->
+    <ScrollView
+        android:id="@+id/allApps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingStart="48dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="48dp"
+        android:paddingBottom="28dp"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/allAppsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/all_apps"
+                android:textSize="20sp" />
+
+            <GridLayout
+                android:id="@+id/allAppsGrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:columnCount="6" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Launcher settings: side panel over a dimmed home screen; Back closes it. -->
+    <FrameLayout
+        android:id="@+id/settingsScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/settingsPanel"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="28dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/settingsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="14dp"
+                android:text="@string/plume_settings"
+                android:textSize="20sp" />
+
+            <!-- Scrolls once the rows outgrow the screen; focus moving down scrolls it along. -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/settingsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>
