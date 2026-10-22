@@ -605,19 +605,20 @@ class MainActivity : Activity() {
 
             val iv = ImageView(this@MainActivity).apply {
                 setImageBitmap(qrBitmap(url, qrSize))
-                setPadding(dp(8), dp(8), dp(8), dp(8))
+                setPadding(dp(10), dp(10), dp(10), dp(10))
                 background = GradientDrawable().apply {
-                    cornerRadius = dp(14).toFloat()
+                    cornerRadius = dp(16).toFloat()
                     setColor(Color.WHITE)
                 }
             }
             addView(iv, LinearLayout.LayoutParams(qrSize, qrSize))
 
-            addView(label(footerText, 14f).apply {
+            addView(label(footerText, 15f).apply {
                 setTypeface(typeface, Typeface.BOLD)
                 gravity = Gravity.CENTER
+                setTextColor(Color.WHITE)
+                setShadowLayer(dp(2).toFloat(), 0f, dp(1).toFloat(), 0xCC000000.toInt())
                 setPadding(0, dp(12), 0, 0)
-                secondary(0.9f)
             })
         }
         homePopup(0, title, subtitle, qrContainer, getString(R.string.setup_close) to { setupDialog?.dismiss() })
@@ -629,17 +630,33 @@ class MainActivity : Activity() {
         val card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(28), dp(24), dp(28), dp(20))
-            background = if (dark || isGlassStyle()) rimCard(dp(16), false, this) else GradientDrawable().apply {
-                cornerRadius = dp(16).toFloat()
+            background = if (dark || isGlassStyle()) rimCard(dp(20), false, this) else GradientDrawable().apply {
+                cornerRadius = dp(20).toFloat()
                 setColor(0xFFF7F8FA.toInt())
             }
-            if (step > 0) addView(label(getString(R.string.setup_step, step), 12f).apply { secondary(0.6f) })
-            addView(label(title, 22f).apply { setTypeface(typeface, Typeface.BOLD); setPadding(0, dp(4), 0, 0) })
-            body?.let { addView(label(it, 14f).apply { maxLines = 6; secondary(0.8f); setLineSpacing(0f, 1.15f); setPadding(0, dp(10), 0, 0) }) }
+            if (step > 0) addView(label(getString(R.string.setup_step, step), 12f).apply {
+                setTextColor(0xCCFFFFFF.toInt())
+                setShadowLayer(dp(1).toFloat(), 0f, dp(1).toFloat(), 0x80000000.toInt())
+            })
+            addView(label(title, 22f).apply {
+                setTypeface(typeface, Typeface.BOLD)
+                setTextColor(Color.WHITE)
+                setShadowLayer(dp(2).toFloat(), 0f, dp(1).toFloat(), 0xCC000000.toInt())
+                setPadding(0, dp(4), 0, 0)
+            })
+            body?.let {
+                addView(label(it, 15f).apply {
+                    maxLines = 6
+                    setTextColor(0xF0FFFFFF.toInt())
+                    setLineSpacing(0f, 1.25f)
+                    setShadowLayer(dp(1).toFloat(), 0f, dp(1).toFloat(), 0x99000000.toInt())
+                    setPadding(0, dp(10), 0, 0)
+                })
+            }
             extra?.let { addView(it) }
             buttons.forEachIndexed { i, (name, action) ->
                 addView(settingsRow(name, "") { if (previewAt >= 0) previewHomeSetup(previewAt + 1) else action() },
-                    LinearLayout.LayoutParams(MATCH_PARENT, dp(44)).apply { topMargin = if (i == 0) dp(20) else dp(4) })
+                    LinearLayout.LayoutParams(MATCH_PARENT, dp(46)).apply { topMargin = if (i == 0) dp(20) else dp(6) })
             }
         }
         val dialog = Dialog(this)
@@ -647,8 +664,8 @@ class MainActivity : Activity() {
         dialog.setContentView(card)
         dialog.window?.run {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setLayout(dp(if (extra != null) 600 else 480), ViewGroup.LayoutParams.WRAP_CONTENT)
-            setDimAmount(0.6f)
+            setLayout(dp(if (extra != null) 560 else 480), ViewGroup.LayoutParams.WRAP_CONTENT)
+            setDimAmount(0.65f)
         }
         dialog.setOnDismissListener {
             if (setupDialog !== dialog) return@setOnDismissListener
@@ -2128,13 +2145,13 @@ class MainActivity : Activity() {
             isFocusable = true
             isClickable = true
             val name = label(title, 14f).apply {
-                setTextColor(if (isPanelDark) 0xCCFFFFFF.toInt() else fg)
+                setTextColor(if (isPanelDark) 0xF2FFFFFF.toInt() else fg)
             }
             addView(name, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
             val isToggle = value == TOGGLE_ON || value == TOGGLE_OFF
             val switchView = if (isToggle) switch(value == TOGGLE_ON) else null
             val shown = if (isToggle) null else label(value, 13f).apply {
-                setTextColor(if (isPanelDark) 0x99FFFFFF.toInt() else 0x88000000.toInt())
+                setTextColor(if (isPanelDark) 0xCCFFFFFF.toInt() else 0x88000000.toInt())
             }
             if (switchView != null) addView(switchView, LinearLayout.LayoutParams(dp(36), dp(20))) else addView(shown)
             setOnClickListener { action() }
@@ -2147,9 +2164,9 @@ class MainActivity : Activity() {
                     shown?.setTextColor(if (isPanelDark) accentColor else 0xFF007AFF.toInt())
                     shown?.setTypeface(currentTypeface(), Typeface.BOLD)
                 } else {
-                    name.setTextColor(if (isPanelDark) 0xCCFFFFFF.toInt() else fg)
+                    name.setTextColor(if (isPanelDark) 0xF2FFFFFF.toInt() else fg)
                     name.setTypeface(currentTypeface(), Typeface.NORMAL)
-                    shown?.setTextColor(if (isPanelDark) 0x99FFFFFF.toInt() else 0x88000000.toInt())
+                    shown?.setTextColor(if (isPanelDark) 0xCCFFFFFF.toInt() else 0x88000000.toInt())
                     shown?.setTypeface(currentTypeface(), Typeface.NORMAL)
                 }
                 if (step != null) shown?.text = if (focused) "‹  $value  ›" else value
@@ -2407,7 +2424,7 @@ class MainActivity : Activity() {
     }
 
     /** The home row shows marks only by default (see rowNames); the All apps grid always labels them. */
-    private fun appTile(a: App, labeled: Boolean = true): View {
+    private fun appTile(a: App, labeled: Boolean = true, isGrid: Boolean = false): View {
         val logo = findLogo(a.pkg)
         val custom = customIcon(a.pkg)
         val name = a.label.takeIf { labeled }
@@ -2416,18 +2433,18 @@ class MainActivity : Activity() {
         val monoTint = currentMonoTint()
         val brandCol = findBrandColour(a.pkg)
         val t = when {
-            custom != null -> tile(name, custom, false, a.pkg) { launch(a) }
+            custom != null -> tile(name, custom, false, a.pkg, isGrid = isGrid) { launch(a) }
             a.pkg.startsWith(HDMI) -> tile(name, a.icon, true, a.pkg,
-                tint = if (colour) BRAND_COLOURS[hdmiIcon(a.label, true)] else monoTint) { launch(a) }
+                tint = if (colour) BRAND_COLOURS[hdmiIcon(a.label, true)] else monoTint, isGrid = isGrid) { launch(a) }
             logo != null -> tile(name.takeIf { !logo.second }, getDrawable(logo.first)!!, true, a.pkg,
                 wordmarkInset = if (!logo.second) null else dp(if (labeled) 28 else 14),
-                tint = if (colour) brandCol else monoTint) { launch(a) }
-            else -> cachedGlyph(a)?.let { tile(name, it, true, a.pkg, tint = if (colour) (brandCol ?: cachedAccent(a)) else monoTint) { launch(a) } }
-                ?: if (colour) tile(name, a.icon.constantState?.newDrawable(resources) ?: a.icon, false, a.pkg) { launch(a) }
+                tint = if (colour) brandCol else monoTint, isGrid = isGrid) { launch(a) }
+            else -> cachedGlyph(a)?.let { tile(name, it, true, a.pkg, tint = if (colour) (brandCol ?: cachedAccent(a)) else monoTint, isGrid = isGrid) { launch(a) } }
+                ?: if (colour) tile(name, a.icon.constantState?.newDrawable(resources) ?: a.icon, false, a.pkg, isGrid = isGrid) { launch(a) }
                 // A copy: greying/tinting the shared icon
                 else tile(name, (a.icon.constantState?.newDrawable(resources) ?: a.icon).mutate().apply {
                     colorFilter = if (monoTint != null) PorterDuffColorFilter(monoTint, PorterDuff.Mode.SRC_IN) else GREYSCALE
-                }, false, a.pkg) { launch(a) }
+                }, false, a.pkg, isGrid = isGrid) { launch(a) }
         }
         t.contentDescription = a.label
         return t
@@ -2464,7 +2481,16 @@ class MainActivity : Activity() {
     }
 
     /** White card: logo on top, name underneath. With no label the mark sits alone, centred, at one size. */
-    private fun tile(label: String?, icon: Drawable, mono: Boolean, tag: String, wordmarkInset: Int? = null, tint: Int? = null, onClick: () -> Unit): View {
+    private fun tile(
+        label: String?,
+        icon: Drawable,
+        mono: Boolean,
+        tag: String,
+        wordmarkInset: Int? = null,
+        tint: Int? = null,
+        isGrid: Boolean = false,
+        onClick: () -> Unit
+    ): View {
         val col = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
@@ -2477,18 +2503,20 @@ class MainActivity : Activity() {
         val text = label?.let {
             label(it, 13f).apply {
                 gravity = Gravity.CENTER
+                setTypeface(typeface, Typeface.BOLD)
+                setTextColor(Color.WHITE)
+                setShadowLayer(dp(2).toFloat(), 0f, dp(1).toFloat(), 0xCC000000.toInt())
                 setPadding(dp(6), dp(7), dp(6), 0)
             }
         }
-        // Same card as light mode; in dark the marks rest slightly dimmed and brighten with focus.
-        val restLogo = if (dark) 0.8f else 1f
-        val restText = if (dark) 0.65f else 1f
+        val restLogo = if (isGrid) 1f else (if (dark) 0.8f else 1f)
+        val restText = if (isGrid) 1f else (if (dark) 0.65f else 1f)
         img.alpha = restLogo
         text?.alpha = restText
-        style(col, dp(8), card = true) { focused ->
+        style(col, dp(8), card = true, isGrid = isGrid) { focused ->
             if (!dark) return@style
-            img.animate().alpha(if (focused) 1f else restLogo).setDuration(160).start()
-            text?.animate()?.alpha(if (focused) 1f else restText)?.setDuration(160)?.start()
+            img.animate().alpha(if (focused || isGrid) 1f else restLogo).setDuration(160).start()
+            text?.animate()?.alpha(if (focused || isGrid) 1f else restText)?.setDuration(160)?.start()
         }
         if (text == null) {
             // Icons share one height. Wordmarks sit in a square viewport, so fit them by width instead
@@ -2921,13 +2949,14 @@ class MainActivity : Activity() {
         val gap = dp(10)
         val width = (resources.displayMetrics.widthPixels - dp(96) - gap * 5) / 6
         for (a in sortedApps()) {
-            val t = appTile(a) // holding OK here pins it to the row (see onHold)
+            val t = appTile(a, labeled = true, isGrid = true) // holding OK here pins it to the row (see onHold)
             allAppsGrid.addView(t, GridLayout.LayoutParams().apply {
                 this.width = width
                 height = dp(76)
                 setMargins(0, 0, gap, gap)
             })
         }
+        allApps.setBackgroundColor(if (dark) 0xD9000000.toInt() else ground)
         allApps.visibility = View.VISIBLE
         homeFocusable(false)
         allAppsGrid.getChildAt(0)?.requestFocus()
@@ -3668,7 +3697,7 @@ class MainActivity : Activity() {
      * top sheen; dark mode brightens the glass gradient instead (a white sheen would haze it grey).
      * Only transform/alpha/colour change, so it stays on the GPU and costs no re-layout.
      */
-    private fun style(v: View, radius: Int, card: Boolean, lift: Float = 1.08f, onFocus: ((Boolean) -> Unit)? = null) {
+    private fun style(v: View, radius: Int, card: Boolean, lift: Float = 1.08f, isGrid: Boolean = false, onFocus: ((Boolean) -> Unit)? = null) {
         val glass = isGlassStyle()
         val customTint = cardTintColor()
         val sheen = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(0x50FFFFFF.toInt(), 0x00FFFFFF)).apply {
@@ -3678,20 +3707,39 @@ class MainActivity : Activity() {
         val bg = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, if (card) cardRest else intArrayOf(0, 0)).apply {
             cornerRadius = radius.toFloat()
         }
-        v.background = if (card && (dark || glass || customTint != null)) rimCard(radius, false, v) else bg
-        if (!dark && !glass) v.foreground = sheen
+
+        fun gridCardBg(lit: Boolean): Drawable {
+            val colors = if (lit) intArrayOf(0xF43E4554.toInt(), 0xEE20242E.toInt())
+                         else intArrayOf(0xD0262A34.toInt(), 0xBC181A22.toInt(), 0xAC101218.toInt())
+            val stroke = if (lit) Color.WHITE else 0x40FFFFFF.toInt()
+            val strokeWidth = if (lit) dp(2) else dp(1)
+            return GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors).apply {
+                cornerRadius = radius.toFloat()
+                setStroke(strokeWidth, stroke)
+            }
+        }
+
+        v.background = if (isGrid) gridCardBg(false)
+                       else if (card && (dark || glass || customTint != null)) rimCard(radius, false, v)
+                       else bg
+        if (!dark && !glass && !isGrid) v.foreground = sheen
         v.clipToOutline = true
         v.outlineSpotShadowColor = Color.BLACK
         v.outlineAmbientShadowColor = Color.BLACK
-        v.elevation = if (card) dp(if (glass) 6 else 2).toFloat() else 0f
+        v.elevation = if (card) dp(if (glass || isGrid) 6 else 2).toFloat() else 0f
         v.isFocusable = true
         v.isClickable = true
         v.setOnLongClickListener { if (!holdFired) fireHold(v); true }
         v.setOnFocusChangeListener { _, focused ->
             sheen.alpha = if (focused) 255 else 0
-            if (card && (dark || glass || customTint != null)) v.background = rimCard(radius, focused, v)
-            else if (card) bg.colors = if (focused) cardLit else cardRest
-            val targetLift = if (card && glass) 1.10f else lift
+            if (isGrid) {
+                v.background = gridCardBg(focused)
+            } else if (card && (dark || glass || customTint != null)) {
+                v.background = rimCard(radius, focused, v)
+            } else if (card) {
+                bg.colors = if (focused) cardLit else cardRest
+            }
+            val targetLift = if (card && (glass || isGrid)) 1.10f else lift
             v.animate()
                 .scaleX(if (focused) targetLift else 1f).scaleY(if (focused) targetLift else 1f)
                 .translationZ(if (focused) dp(14).toFloat() else 0f)
@@ -3764,9 +3812,10 @@ class MainActivity : Activity() {
                 setStroke(1, if (lit) ((0x80 shl 24) or baseRgb) else ((0x33 shl 24) or baseRgb))
             }
         } else {
-            GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, if (lit) DARK_CARD_LIT else DARK_CARD).apply {
+            val stroke = if (lit) (if (dark) 0x66FFFFFF.toInt() else 0x26000000.toInt()) else (if (dark) 0x33FFFFFF.toInt() else 0x1A000000.toInt())
+            GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, if (lit) (if (dark) DARK_CARD_LIT else cardLit) else (if (dark) DARK_CARD else cardRest)).apply {
                 cornerRadius = radius.toFloat()
-                setStroke(1, if (lit) RIM_SIDE_LIT else RIM_SIDE) // 1px, not 1dp: a hairline stays crisp
+                setStroke(1, stroke)
             }
         }
 
@@ -3912,8 +3961,8 @@ class MainActivity : Activity() {
         // catches light (brightest along the top), the way light-mode cards use a soft shadow.
         const val DARK_BG = 0xFF000000.toInt() // home ground, settings panel, inset boxes
         const val DARK_SURFACE = 0xFF0B0B0B.toInt() // placeholders behind images
-        const val DARK_TEXT = 0xFFF5F5F5.toInt()
-        const val DARK_TEXT_2 = 0xFF7A7A7A.toInt() // values, unfocused rows, supporting text
+        const val DARK_TEXT = 0xFFFFFFFF.toInt()
+        const val DARK_TEXT_2 = 0xFFC8CCD6.toInt() // high-contrast values, supporting text (was 0xFF7A7A7A)
         val DARK_CARD = intArrayOf(0xFF0B0B0B.toInt(), 0xFF040404.toInt())
         val DARK_CARD_LIT = intArrayOf(0xFF141414.toInt(), 0xFF070707.toInt())
         const val RIM_TOP = 0x17FFFFFF // white 9%

@@ -234,6 +234,7 @@
         android:id="@+id/allApps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#D9000000"
         android:clipToPadding="false"
         android:paddingStart="48dp"
         android:paddingTop="28dp"
