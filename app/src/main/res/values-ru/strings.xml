@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="override_desc">Открывает Plume при появлении домашнего экрана Google TV, чтобы кнопка Домой вела сюда.</string>
+    <string name="override_desc">Открывает slawastr\'s launcher при появлении домашнего экрана Google TV, чтобы кнопка Домой вела сюда.</string>
     <string name="delete_photo">Удалить \"%1$s\"?</string>
     <string name="photo_added">Добавлено \"%1$s\". Отправьте еще или нажмите Готово.</string>
     <string name="n_of_m">%1$d из %2$d</string>
@@ -10,7 +10,7 @@
     <string name="up_to_date_row">Обновлено (%1$s)</string>
     <string name="too_many_tries">Слишком много попыток. Попробуйте через %1$d с.</string>
     <string name="downloading_paintings">Загрузка картин Галереи (%1$s)…</string>
-    <string name="update_available_toast">Доступна версия Plume %1$s. Обновите в настройках Plume.</string>
+    <string name="update_available_toast">Доступна версия slawastr\'s launcher %1$s. Обновите в настройках.</string>
     <string name="no_places">Город \"%1$s\" не найден.</string>
     <string name="time_left_hm">Осталось %1$d ч %2$d мин</string>
     <string name="time_left_m">Осталось %1$d мин</string>
@@ -30,9 +30,9 @@
     <string name="add_from_phone">Добавить с телефона…</string>
     <string name="choose_from_tv">Выбрать папку на этом ТВ…</string>
     <string name="remove_photo_row">Удалить фото…</string>
-    <string name="photos_permission">Plume нужен доступ к фото для отображения папок</string>
-    <string name="home_off_hint">Выключите \"Plume: Кнопка Домой\" в Настройки → Система → Спец. возможности</string>
-    <string name="home_on_hint">Включите \"Plume: Кнопка Домой\" в Настройки → Система → Спец. возможности</string>
+    <string name="photos_permission">slawastr\'s launcher нужен доступ к фото для отображения папок</string>
+    <string name="home_off_hint">Выключите \"slawastr\'s launcher: Кнопка Домой\" в Настройки → Система → Спец. возможности</string>
+    <string name="home_on_hint">Включите \"slawastr\'s launcher: Кнопка Домой\" в Настройки → Система → Спец. возможности</string>
     <string name="dark_wallpaper">Обои для тёмного режима</string>
     <string name="light_wallpaper">Обои для светлого режима</string>
     <string name="folder_photo_changes">Смена фото из папки</string>
@@ -123,7 +123,7 @@
     <string name="screensaver_timing">Время до заставки</string>
     <string name="home_button">Кнопка Домой</string>
     <string name="default_launcher">Основной лаунчер</string>
-    <string name="plume_press_change">Plume: нажмите для смены</string>
+    <string name="plume_press_change">slawastr\'s launcher: нажмите для смены</string>
     <string name="press_to_set">Нажмите для выбора</string>
     <string name="updates">Обновления</string>
     <string name="updating">Обновление…</string>
@@ -160,8 +160,8 @@
     <string name="paintings_failed">Не удалось загрузить картины. Проверьте соединение.</string>
     <string name="cant_dream">Этот ТВ не может запустить заставку по требованию</string>
     <string name="update_check_failed">Не удалось проверить обновления. Проверьте соединение.</string>
-    <string name="up_to_date_toast">Установлена последняя версия Plume</string>
-    <string name="allow_installs">Включите Plume в следующем списке и нажмите Обновления снова</string>
+    <string name="up_to_date_toast">Установлена последняя версия slawastr\'s launcher</string>
+    <string name="allow_installs">Включите slawastr\'s launcher в следующем списке и нажмите Обновления снова</string>
     <string name="update_download_failed">Не удалось загрузить обновление. Проверьте соединение.</string>
     <string name="update_install_failed">Ошибка установки обновления</string>
     <string name="city_hint">Введите город и нажмите Поиск</string>
@@ -189,7 +189,7 @@
     <string name="all_apps">Все приложения</string>
     <string name="settings">Настройки</string>
     <string name="continue_watching">Продолжить просмотр</string>
-    <string name="home_service_label">Plume: Кнопка Домой</string>
+    <string name="home_service_label">slawastr\'s launcher: Кнопка Домой</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
     <string name="theme_auto">Авто</string>
@@ -197,18 +197,18 @@
     <string name="setup_home">Настройка кнопки Домой</string>
     <string name="preview_home_setup">Предпросмотр настройки кнопки Домой</string>
     <string name="setup_step">Шаг %1$d из 3</string>
-    <string name="setup_role_title">Сделайте Plume основным экраном</string>
-    <string name="setup_role_body">Android спросит, какое приложение использовать по умолчанию. Выберите Plume.</string>
+    <string name="setup_role_title">Сделайте slawastr\'s launcher основным экраном</string>
+    <string name="setup_role_body">Android спросит, какое приложение использовать по умолчанию. Выберите slawastr\'s launcher.</string>
     <string name="setup_test_title">Нажмите Домой на пульте</string>
-    <string name="setup_test_body">Plume проверит, что кнопка возвращает сюда.</string>
-    <string name="setup_service_title">Включите кнопку Домой Plume</string>
-    <string name="setup_service_body">Откроются настройки специальных возможностей. Включите \"Plume: Кнопка Домой\".</string>
+    <string name="setup_test_body">slawastr\'s launcher проверит, что кнопка возвращает сюда.</string>
+    <string name="setup_service_title">Включите кнопку Домой slawastr\'s launcher</string>
+    <string name="setup_service_body">Откроются настройки специальных возможностей. Включите \"slawastr\'s launcher: Кнопка Домой\".</string>
     <string name="setup_adb_title">Разблокировка через ADB</string>
     <string name="setup_adb_body">Телевизор блокирует сторонние лаунчеры. Выполните команду через компьютер.</string>
     <string name="setup_scan_help">Пошаговая помощь</string>
     <string name="setup_done_title">Кнопка Домой настроена</string>
-    <string name="setup_done_body">Кнопка Домой на пульте теперь открывает Plume.</string>
-    <string name="setup_done_body_service">Кнопка Домой на пульте открывает Plume. Удержание кнопки открывает меню Google TV.</string>
+    <string name="setup_done_body">Кнопка Домой на пульте теперь открывает slawastr\'s launcher.</string>
+    <string name="setup_done_body_service">Кнопка Домой на пульте открывает slawastr\'s launcher. Удержание кнопки открывает меню Google TV.</string>
     <string name="setup_continue">Продолжить</string>
     <string name="setup_not_now">Не сейчас</string>
     <string name="setup_skip_check">Пропустить проверку</string>
@@ -217,7 +217,7 @@
     <string name="setup_close">Закрыть</string>
     <string name="setup_done">Готово</string>
     <string name="whats_new_title">Что нового в %1$s</string>
-    <string name="whats_new_card_title">Новое в Plume %1$s</string>
+    <string name="whats_new_card_title">Новое в slawastr\'s launcher %1$s</string>
     <string name="see_all_changes">Посмотреть все изменения</string>
     <string name="check_updates">Проверить обновления</string>
     <string name="install_update">Установить %1$s</string>
@@ -230,6 +230,8 @@
     <string name="section_weather">Погода</string>
     <string name="section_screensaver">Заставка</string>
     <string name="section_home">Кнопка Домой</string>
+    <string name="author_feedback">Обратная связь</string>
+    <string name="author_feedback_desc">Предложения и ошибки: @slawastr</string>
     <string name="author_support">Поддержка автора</string>
     <string name="author_support_desc">Сканируйте QR для перевода по СБП (Ozon Банк)</string>
     <string name="wallpaper_photos">Оригиналы фоток с обоев</string>

@@ -262,6 +262,7 @@ class MainActivity : Activity() {
             if (!prefs.contains("geo_lon")) ed.putFloat("geo_lon", 30.31413f)
             ed.apply()
         }
+        prefs.edit().remove("upd_ver").remove("upd_time").remove("upd_told").apply()
     }
 
     override fun onCreate(state: Bundle?) {
@@ -283,11 +284,11 @@ class MainActivity : Activity() {
             prefs.edit().remove("reopen_settings").apply()
             ui.post { openLauncherSettings(R.string.theme) }
         } else if (!homeServiceOn() && !prefs.getBoolean("setup_shown", false)) {
-            // Fresh install: walk through making Home land on Plume, the one step that has to happen by hand.
+            // Fresh install: walk through making Home land on launcher, the one step that has to happen by hand.
             prefs.edit().putBoolean("setup_shown", true).apply()
             ui.post { startHomeSetup() }
         } else if (notesUnseen()) {
-            ui.post { whatsNewCard() } // after an update; the self-updater reopens Plume, so it's seen right away
+            ui.post { whatsNewCard() } // after an update; reopens launcher, so it's seen right away
         }
 
         registerReceiver(packageReceiver, IntentFilter().apply {
@@ -325,8 +326,6 @@ class MainActivity : Activity() {
         ui.post(wallpaperTick)
         // Gallery chosen but its paintings missing (updated from a version that bundled them): fetch them.
         if (galleryOn() && photoScreensaver() == null && !paintingsReady(this)) downloadPaintings {}
-        checkUpdate(force = false)
-        ui.post { updateBadge() } // after layout, so the icon has its size
     }
 
     /** Auto theme flips at 7:00 and 19:00 even while the home screen just sits there. */
@@ -403,7 +402,7 @@ class MainActivity : Activity() {
 
     private fun toggleHomeButton() = if (homeServiceOn()) turnOffHomeButton() else turnOnHomeButton()
 
-    /** Off hands Home back to the TV's own launcher, and Plume leaves it off until switched on again. */
+    /** Off hands Home back to the TV's own launcher, and leaves it off until switched on again. */
     private fun turnOffHomeButton() {
         prefs.edit().putBoolean("home_off", true).apply()
         HomeOverride.running?.disableSelf()
@@ -469,7 +468,7 @@ class MainActivity : Activity() {
     }
 
     // ---------- Home setup ----------
-    // Popups that try each way of making Home land on Plume, stopping at the first that works: the default-home
+    // Popups that try each way of making Home land on launcher, stopping at the first that works: the default-home
     // role, then the Home button service, then adb help for TVs that grey out the service (Android 13+
     // "restricted settings" for sideloaded apps). Each way is checked by asking for a Home press: one that
     // reaches us arrives as a Home intent; one that doesn't sends us to the background.
@@ -533,7 +532,7 @@ class MainActivity : Activity() {
         },
         getString(R.string.setup_not_now) to { setupDialog?.dismiss() })
 
-    /** The one-time grant lets Plume switch the service on itself, past the greyed-out toggle. */
+    /** The one-time grant lets the launcher switch the service on itself, past the greyed-out toggle. */
     private fun adbPopup() {
         val mono = Typeface.MONOSPACE
         val code = LinearLayout(this).apply {
@@ -567,7 +566,7 @@ class MainActivity : Activity() {
 
     /**
      * Once after an update: the first three CHANGELOG.md lines of this version, so put the best ones first.
-     * Closing it counts as reading the notes, which clears the dot on the Plume settings icon.
+     * Closing it counts as reading the notes, which clears the dot on the settings icon.
      */
     private fun whatsNewCard() {
         prefs.edit().putString("seen_notes", myVersion()).apply()
@@ -624,6 +623,76 @@ class MainActivity : Activity() {
         homePopup(0, title, subtitle, qrContainer, getString(R.string.setup_close) to { setupDialog?.dismiss() })
     }
 
+    private fun showAboutModal() {
+        val qrSize = dp(115)
+        fun createCard(title: String, subtitle: String, url: String, footer: String) = LinearLayout(this@MainActivity).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding(dp(12), dp(10), dp(12), dp(10))
+            background = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(0x28FFFFFF.toInt(), 0x14FFFFFF.toInt())).apply {
+                cornerRadius = dp(16).toFloat()
+                setStroke(dp(1), 0x38FFFFFF.toInt())
+            }
+
+            addView(label(title, 14f).apply {
+                setTypeface(typeface, Typeface.BOLD)
+                setTextColor(Color.WHITE)
+                setShadowLayer(dp(2).toFloat(), 0f, dp(1).toFloat(), 0xCC000000.toInt())
+            })
+            addView(label(subtitle, 11f).apply {
+                setTextColor(0xDDFFFFFF.toInt())
+                setPadding(0, dp(1), 0, dp(6))
+            })
+
+            val iv = ImageView(this@MainActivity).apply {
+                setImageBitmap(qrBitmap(url, qrSize))
+                setPadding(dp(6), dp(6), dp(6), dp(6))
+                background = GradientDrawable().apply {
+                    cornerRadius = dp(10).toFloat()
+                    setColor(Color.WHITE)
+                }
+            }
+            addView(iv, LinearLayout.LayoutParams(qrSize, qrSize))
+
+            addView(label(footer, 13f).apply {
+                setTypeface(typeface, Typeface.BOLD)
+                setTextColor(Color.WHITE)
+                setShadowLayer(dp(2).toFloat(), 0f, dp(1).toFloat(), 0xCC000000.toInt())
+                setPadding(0, dp(6), 0, 0)
+            })
+        }
+
+        val container = LinearLayout(this).apply {
+            tag = "wide"
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            setPadding(0, dp(12), 0, dp(6))
+
+            val cardW = dp(200)
+            val cardMargin = dp(10)
+
+            val tgCol = createCard("Обои и фото", "Telegram-канал", "https://t.me/slawastrsphotos", "@slawastrsphotos")
+            val feedbackCol = createCard("Обратная связь", "Ошибки и идеи", "https://t.me/slawastr", "@slawastr")
+            val ozonCol = createCard("Поддержка", "Ozon Банк · СБП", "https://finance.ozon.ru/apps/sbp/ozonbankpay/01a155d9-e962-7ffe-aa0c-ac329362226c?attempt=1", "Перевод по СБП")
+
+            addView(tgCol, LinearLayout.LayoutParams(cardW, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                marginEnd = cardMargin
+            })
+            addView(feedbackCol, LinearLayout.LayoutParams(cardW, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                marginEnd = cardMargin
+            })
+            addView(ozonCol, LinearLayout.LayoutParams(cardW, ViewGroup.LayoutParams.WRAP_CONTENT))
+        }
+
+        homePopup(
+            0,
+            getString(R.string.about_launcher),
+            getString(R.string.author_name),
+            container,
+            getString(R.string.setup_close) to { setupDialog?.dismiss() }
+        )
+    }
+
     /** A card in the middle of the screen over the dimmed home screen, in the hold menus' colours. */
     private fun homePopup(step: Int, title: String, body: String?, extra: View?, vararg buttons: Pair<String, () -> Unit>) {
         setupDialog?.let { setupDialog = null; it.dismiss() } // replaced, not closed: the dismiss listener leaves the flow alone
@@ -664,7 +733,8 @@ class MainActivity : Activity() {
         dialog.setContentView(card)
         dialog.window?.run {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            setLayout(dp(if (extra != null) 560 else 480), ViewGroup.LayoutParams.WRAP_CONTENT)
+            val width = if (extra != null && extra.tag == "wide") dp(690) else dp(if (extra != null) 560 else 480)
+            setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
             setDimAmount(0.65f)
         }
         dialog.setOnDismissListener {
@@ -1640,7 +1710,7 @@ class MainActivity : Activity() {
     }
 
     /**
-     * Plume settings, as a short list of sections that each open a page. [at] is the string id of the row to
+     * Launcher settings, as a short list of sections that each open a page. [at] is the string id of the row to
      * focus: a row inside a section opens that section on it; a section or a top-level row focuses it in the
      * main list. Rows are found by name, so adding one never moves the others.
      */
@@ -1905,8 +1975,16 @@ class MainActivity : Activity() {
             }
         }
         val top = sections.map { (key, value, keys) -> key to page(getString(key), "$value  ›") { renderSettings(keys[0]) } } +
-            listOf(R.string.updates, R.string.lock_layout).map { it to rows[it]!! } +
+            listOf(R.string.lock_layout).map { it to rows[it]!! } +
             listOf(
+                R.string.author_feedback to page(getString(R.string.author_feedback), "@slawastr") {
+                    showQrModal(
+                        getString(R.string.author_feedback),
+                        getString(R.string.author_feedback_desc),
+                        "https://t.me/slawastr",
+                        "@slawastr"
+                    )
+                },
                 R.string.author_support to page(getString(R.string.author_support), "Ozon Банк · СБП") {
                     showQrModal(
                         getString(R.string.author_support),
@@ -1924,12 +2002,7 @@ class MainActivity : Activity() {
                     )
                 },
                 R.string.about_launcher to page(getString(R.string.about_launcher), getString(R.string.author_name)) {
-                    showQrModal(
-                        getString(R.string.about_launcher),
-                        "${getString(R.string.author_name)}\nTelegram: @slawastrsphotos",
-                        "https://t.me/slawastrsphotos",
-                        "@slawastrsphotos"
-                    )
+                    showAboutModal()
                 }
             ) +
             listOfNotNull(if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE == 0) null
@@ -1942,7 +2015,7 @@ class MainActivity : Activity() {
     private fun <T> List<T>.step(current: T, dir: Int) = this[((indexOf(current) + dir) % size + size) % size]
 
     // Pages inside the settings panel (wallpaper list, app toggles…) instead of system dialogs, so they
-    // match Plume's look. Back goes up one page; from the main list it closes the panel.
+    // match the launcher's look. Back goes up one page; from the main list it closes the panel.
 
     private var pageBack: (() -> Unit)? = null
     private var pageExit: (() -> Unit)? = null // cleanup when the page goes away (stops the upload server)
@@ -1974,7 +2047,7 @@ class MainActivity : Activity() {
     }
 
     // ---------- layout lock ----------
-    // A PIN in front of Plume settings and everything that changes the home screen; apps still open as usual.
+    // A PIN in front of launcher settings and everything that changes the home screen; apps still open as usual.
     // It keeps the layout safe from small hands, it doesn't keep apps from kids: voice search and Android
     // settings get past it, so it's called a layout lock, not parental controls.
 
@@ -1982,7 +2055,7 @@ class MainActivity : Activity() {
 
     private var unlockedUntil = 0L // one PIN covers a few minutes of changes, until the home screen is left
     private var pinFails = 0
-    private var pinWaitUntil = 0L // ponytail: in memory, so restarting Plume resets the wait; fine for kids at a remote
+    private var pinWaitUntil = 0L // in memory, so restarting launcher resets the wait; fine for kids at a remote
     private var pinBox: View? = null
 
     private fun locked() = lockOn() && SystemClock.elapsedRealtime() > unlockedUntil
@@ -2807,7 +2880,7 @@ class MainActivity : Activity() {
         ))
     }
 
-    /** A small Plume-styled menu just above [anchor]; Back closes it. */
+    /** A small styled menu just above [anchor]; Back closes it. */
     private fun holdMenu(anchor: View, items: List<Pair<String, () -> Unit>>) {
         val list = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -3020,7 +3093,7 @@ class MainActivity : Activity() {
         if (folder != null) paintingsDir(this).deleteRecursively() // not needed for photos: give the space back
         if (galleryOn()) return
         if (checkSelfPermission(WRITE_SECURE) != PackageManager.PERMISSION_GRANTED) {
-            // Without the adb permission Plume can't switch it itself; Android's own list has getString(R.string.gallery).
+            // Without the adb permission the launcher can't switch it itself; Android's own list has getString(R.string.gallery).
             Toast.makeText(this, getString(R.string.choose_gallery_hint), Toast.LENGTH_LONG).show()
             return openScreensaverSettings()
         }
@@ -3066,7 +3139,7 @@ class MainActivity : Activity() {
                 paintingsDir(this).deleteRecursively()
                 part.renameTo(paintingsDir(this))
             } catch (e: Exception) {
-                android.util.Log.w("Plume", "paintings download failed ($e)")
+                android.util.Log.w("slawastr", "paintings download failed ($e)")
                 part.deleteRecursively()
                 false
             }
@@ -3097,44 +3170,19 @@ class MainActivity : Activity() {
     private fun myVersion() = packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
 
     /** The newer version a check found, if any (null again once it's installed). */
-    private fun availableUpdate() = prefs.getString("upd_ver", null)?.takeIf { newerVersion(it, myVersion()) }
+    private fun availableUpdate(): String? = null
 
     private fun checkUpdate(force: Boolean) {
-        if (checking || !force && System.currentTimeMillis() - prefs.getLong("upd_time", 0) < 24 * 3600_000L) return
-        checking = true
-        if (force) renderSettings(R.string.updates)
-        io.execute {
-            val latest = try {
-                getJson("https://api.github.com/repos/$REPO/releases/latest").getString("tag_name").removePrefix("v")
-            } catch (e: Exception) {
-                android.util.Log.w("Plume", "update check failed ($e)")
-                null
-            }
-            if (latest != null) prefs.edit().putString("upd_ver", latest).putLong("upd_time", System.currentTimeMillis()).apply()
-            ui.post {
-                checking = false
-                val ver = availableUpdate()
-                if (ver != null && (force || prefs.getString("upd_told", null) != ver)) {
-                    prefs.edit().putString("upd_told", ver).apply()
-                    if (!force) Toast.makeText(this, getString(R.string.update_available_toast, ver), Toast.LENGTH_LONG).show()
-                } else if (force) {
-                    Toast.makeText(this, if (latest == null) getString(R.string.update_check_failed) else getString(R.string.up_to_date_toast), Toast.LENGTH_SHORT).show()
-                }
-                updateBadge()
-                if (settingsScrim.visibility == View.VISIBLE) renderSettings(R.string.updates)
-            }
-        }
+        // Automatic update checking disabled
     }
 
     /** What's new in this version (the CHANGELOG.md section the build put in), with check or install on top. */
     private fun showUpdates() {
         prefs.edit().putString("seen_notes", myVersion()).apply()
         updateBadge()
-        val ver = availableUpdate()
         showPage(getString(R.string.whats_new_title, myVersion()), listOf(
-            if (ver != null) page(getString(R.string.install_update, ver)) { installUpdate(ver) }
-            else page(getString(R.string.check_updates)) { checkUpdate(force = true) },
-        ), back = { renderSettings(R.string.updates) })
+            page(getString(R.string.check_updates)) { Toast.makeText(this, getString(R.string.up_to_date_toast), Toast.LENGTH_SHORT).show() }
+        ), back = { renderSettings(R.string.lock_layout) })
         // Focusable, lit on focus, so Down walks through notes longer than the panel and it scrolls along.
         getString(R.string.whats_new).split('\n').forEach {
             settingsList.addView(label("", 13f).apply {
@@ -3152,21 +3200,13 @@ class MainActivity : Activity() {
     }
 
     /** Notes the user hasn't opened since updating. A fresh install has nothing new to tell. */
-    private fun notesUnseen(): Boolean {
-        val info = packageManager.getPackageInfo(packageName, 0)
-        return info.firstInstallTime != info.lastUpdateTime && prefs.getString("seen_notes", null) != info.versionName
-    }
+    private fun notesUnseen(): Boolean = false
 
     private val badge by lazy { GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(BADGE) } }
 
-    /** A dot on the Plume settings icon while an update waits or its notes are unread. */
+    /** A dot on the launcher settings icon while an update waits or its notes are unread. */
     private fun updateBadge() {
-        val icon = findViewById<ImageView>(R.id.launcherSettings)
-        icon.overlay.clear()
-        if (availableUpdate() == null && !notesUnseen()) return
-        val size = dp(9)
-        badge.setBounds(icon.width - size - dp(3), dp(3), icon.width - dp(3), dp(3) + size)
-        icon.overlay.add(badge)
+        findViewById<ImageView>(R.id.launcherSettings)?.overlay?.clear()
     }
 
     private fun installUpdate(ver: String) {
@@ -3187,8 +3227,8 @@ class MainActivity : Activity() {
                 val id = installer.createSession(params)
                 installer.openSession(id).use { session ->
                     try {
-                        openStream("https://github.com/$REPO/releases/download/v$ver/Plume.apk").use { input ->
-                            session.openWrite("Plume.apk", 0, -1).use { out ->
+                        openStream("https://github.com/$REPO/releases/download/v$ver/slawastr-launcher.apk").use { input ->
+                            session.openWrite("slawastr-launcher.apk", 0, -1).use { out ->
                                 input.copyTo(out)
                                 session.fsync(out)
                             }
@@ -3204,7 +3244,7 @@ class MainActivity : Activity() {
                 }
                 true
             } catch (e: Exception) {
-                android.util.Log.w("Plume", "update download failed ($e)")
+                android.util.Log.w("slawastr", "update download failed ($e)")
                 false
             }
             ui.post {
@@ -3228,7 +3268,7 @@ class MainActivity : Activity() {
         updating = false
         if (status != PackageInstaller.STATUS_SUCCESS) {
             val why = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE)
-            android.util.Log.w("Plume", "update install failed: $status $why")
+            android.util.Log.w("slawastr", "update install failed: $status $why")
             if (status != PackageInstaller.STATUS_FAILURE_ABORTED) {
                 Toast.makeText(this, getString(R.string.update_install_failed), Toast.LENGTH_LONG).show()
             }
@@ -3408,7 +3448,7 @@ class MainActivity : Activity() {
      * 2. Any app's own home-screen channel named "Continue Watching". Stremio publishes one (with
      *    progress and an autoPlay resume link) instead of using Watch Next, so signing in to Stremio
      *    on the TV is all it takes. Channel rows carry no timestamps, so they use the time the app was
-     *    last opened from Plume, keeping the app's own order among themselves.
+     *    last opened from launcher, keeping the app's own order among themselves.
      * Newest first across apps, each app's [PER_APP] newest ahead of the rest, so one app with ten shows can't bury the others.
      */
     private fun queryWatchNext(): List<Prog> {
@@ -3970,7 +4010,7 @@ class MainActivity : Activity() {
         const val RIM_TOP_LIT = 0x38FFFFFF // white 22%
         const val RIM_SIDE_LIT = 0x17FFFFFF
         const val PANEL_EDGE = 0x0FFFFFFF // white 6%, the settings panel's left edge
-        const val HELP_URL = "https://github.com/aradhyas8/Plume_Launcher#home-button-on-android-13-and-newer"
+        const val HELP_URL = "https://github.com/SLAWASTR/slawastr-launcher#home-button-on-android-13-and-newer"
         const val TOGGLE_ON = "\u0000on" // row values drawn as a switch instead of text
         const val TOGGLE_OFF = "\u0000off"
         const val PIN_TRIES = 5 // wrong PINs before a 30 s wait
@@ -3985,7 +4025,7 @@ class MainActivity : Activity() {
             60 to R.string.every_60, 1440 to R.string.every_1440,
         )
         const val CHOSEN = "✓"
-        const val REPO = "aradhyas8/Plume_Launcher"
+        const val REPO = "SLAWASTR/slawastr-launcher"
         const val UPDATE_STATUS = "dev.plume.UPDATE_STATUS"
         const val WRITE_EPG ="com.android.providers.tv.permission.WRITE_EPG_DATA"
         const val TV_SETTINGS = "com.android.tv.settings"

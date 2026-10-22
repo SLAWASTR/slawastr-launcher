@@ -1,5 +1,5 @@
 <resources>
-    <string name="override_desc">Opens Plume whenever the Google TV home screen appears, so the Home button lands here.</string>
+    <string name="override_desc">Opens slawastr\'s launcher whenever the Google TV home screen appears, so the Home button lands here.</string>
     <string name="delete_photo">Delete \"%1$s\"?</string>
     <string name="photo_added">Added \"%1$s\". Send another, or press Done.</string>
     <string name="n_of_m">%1$d of %2$d</string>
@@ -9,7 +9,7 @@
     <string name="up_to_date_row">Up to date (%1$s)</string>
     <string name="too_many_tries">Too many tries. Try again in %1$d s.</string>
     <string name="downloading_paintings">Downloading Gallery paintings (%1$s)…</string>
-    <string name="update_available_toast">Plume %1$s is available. Update it in Plume settings.</string>
+    <string name="update_available_toast">slawastr\'s launcher %1$s is available. Update it in settings.</string>
     <string name="no_places">No places called \"%1$s\".</string>
     <string name="time_left_hm">%1$d hr %2$d min left</string>
     <string name="time_left_m">%1$d min left</string>
@@ -29,9 +29,9 @@
     <string name="add_from_phone">Add from phone…</string>
     <string name="choose_from_tv">Choose a folder on this TV…</string>
     <string name="remove_photo_row">Remove a photo…</string>
-    <string name="photos_permission">Plume needs access to photos to show your folders</string>
-    <string name="home_off_hint">Turn off \"Plume: Home button\" in Settings → System → Accessibility</string>
-    <string name="home_on_hint">Turn on \"Plume: Home button\" in Settings → System → Accessibility</string>
+    <string name="photos_permission">slawastr\'s launcher needs access to photos to show your folders</string>
+    <string name="home_off_hint">Turn off \"slawastr\'s launcher: Home button\" in Settings → System → Accessibility</string>
+    <string name="home_on_hint">Turn on \"slawastr\'s launcher: Home button\" in Settings → System → Accessibility</string>
     <string name="dark_wallpaper">Dark mode wallpaper</string>
     <string name="light_wallpaper">Light mode wallpaper</string>
     <string name="folder_photo_changes">Folder photo changes</string>
@@ -122,7 +122,7 @@
     <string name="screensaver_timing">Screensaver timing</string>
     <string name="home_button">Home button</string>
     <string name="default_launcher">Default launcher</string>
-    <string name="plume_press_change">Plume: press to change</string>
+    <string name="plume_press_change">slawastr\'s launcher: press to change</string>
     <string name="press_to_set">Press to set</string>
     <string name="updates">Updates</string>
     <string name="updating">Updating…</string>
@@ -159,8 +159,8 @@
     <string name="paintings_failed">Couldn\'t download the paintings. Check the connection and try again.</string>
     <string name="cant_dream">This TV can\'t start the screensaver on demand</string>
     <string name="update_check_failed">Couldn\'t check for updates. Check the connection.</string>
-    <string name="up_to_date_toast">Plume is up to date</string>
-    <string name="allow_installs">Turn on Plume in the next list, then press Updates again</string>
+    <string name="up_to_date_toast">slawastr\'s launcher is up to date</string>
+    <string name="allow_installs">Turn on slawastr\'s launcher in the next list, then press Updates again</string>
     <string name="update_download_failed">Couldn\'t download the update. Check the connection and try again.</string>
     <string name="update_install_failed">Update failed to install</string>
     <string name="city_hint">Type a city, then Search</string>
@@ -187,7 +187,7 @@
     <string name="settings">Settings</string>
     <string name="continue_watching">Continue Watching</string>
     <!-- Shown in Android's Accessibility list. The two "Turn on/off" hints quote it, so keep them the same. -->
-    <string name="home_service_label">Plume: Home button</string>
+    <string name="home_service_label">slawastr\'s launcher: Home button</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_auto">Auto</string>
@@ -197,18 +197,18 @@
     <string name="setup_home">Set up Home button</string>
     <string name="preview_home_setup">Preview Home setup popups</string>
     <string name="setup_step">Step %1$d of 3</string>
-    <string name="setup_role_title">Make Plume your home screen</string>
-    <string name="setup_role_body">Android will ask which app to use as your home screen. Choose Plume.</string>
+    <string name="setup_role_title">Make slawastr\'s launcher your home screen</string>
+    <string name="setup_role_body">Android will ask which app to use as your home screen. Choose slawastr\'s launcher.</string>
     <string name="setup_test_title">Press Home on your remote</string>
-    <string name="setup_test_body">Plume checks that Home brings you back here. If another home screen opens instead, open Plume again from your apps and setup will try the next way.</string>
-    <string name="setup_service_title">Turn on Plume\'s Home button</string>
-    <string name="setup_service_body">Accessibility settings will open. Select \"Plume: Home button\", turn it on, then press Back to come back here.</string>
+    <string name="setup_test_body">slawastr\'s launcher checks that Home brings you back here. If another home screen opens instead, open slawastr\'s launcher again from your apps and setup will try the next way.</string>
+    <string name="setup_service_title">Turn on slawastr\'s launcher\'s Home button</string>
+    <string name="setup_service_body">Accessibility settings will open. Select \"slawastr\'s launcher: Home button\", turn it on, then press Back to come back here.</string>
     <string name="setup_adb_title">Unlock it once with ADB</string>
-    <string name="setup_adb_body">This TV blocks the Home button switch for apps installed outside the Play Store. Turn on network debugging in Developer options, then run these from a computer or a phone ADB app. Plume does the rest.</string>
+    <string name="setup_adb_body">This TV blocks the Home button switch for apps installed outside the Play Store. Turn on network debugging in Developer options, then run these from a computer or a phone ADB app. slawastr\'s launcher does the rest.</string>
     <string name="setup_scan_help">Step-by-step help</string>
     <string name="setup_done_title">Home is set</string>
-    <string name="setup_done_body">Home on your remote now opens Plume.</string>
-    <string name="setup_done_body_service">Home on your remote now opens Plume. Hold Home for the Google TV dashboard.</string>
+    <string name="setup_done_body">Home on your remote now opens slawastr\'s launcher.</string>
+    <string name="setup_done_body_service">Home on your remote now opens slawastr\'s launcher. Hold Home for the Google TV dashboard.</string>
     <string name="setup_continue">Continue</string>
     <string name="setup_not_now">Not now</string>
     <string name="setup_skip_check">Skip this check</string>
@@ -217,7 +217,7 @@
     <string name="setup_close">Close</string>
     <string name="setup_done">Done</string>
     <string name="whats_new_title">What\'s new in %1$s</string>
-    <string name="whats_new_card_title">New in Plume %1$s</string>
+    <string name="whats_new_card_title">New in slawastr\'s launcher %1$s</string>
     <string name="see_all_changes">See all changes</string>
     <string name="check_updates">Check for updates</string>
     <string name="install_update">Install %1$s</string>
@@ -230,6 +230,8 @@
     <string name="section_weather">Weather</string>
     <string name="section_screensaver">Screensaver</string>
     <string name="section_home">Home button</string>
+    <string name="author_feedback">Feedback</string>
+    <string name="author_feedback_desc">Suggestions and bug reports: @slawastr</string>
     <string name="author_support">Support the author</string>
     <string name="author_support_desc">Scan QR to support via SBP (Ozon Bank)</string>
     <string name="wallpaper_photos">Original wallpapers</string>

@@ -16,7 +16,7 @@ class HomeOverride : AccessibilityService() {
         running = this
     }
 
-    /** Turned off, from Plume's switch or Android's Accessibility settings: the app mustn't turn it back on. */
+    /** Turned off, from the launcher's switch or Android's Accessibility settings: the app mustn't turn it back on. */
     override fun onUnbind(intent: Intent?): Boolean {
         running = null
         getSharedPreferences("home", MODE_PRIVATE).edit().putBoolean("home_off", true).apply()
@@ -38,13 +38,13 @@ class HomeOverride : AccessibilityService() {
         ) goHome()
     }
 
-    // Marked as Home so the setup check can tell it from Plume being opened from the apps list.
+    // Marked as Home so the setup check can tell it from the launcher being opened from the apps list.
     private fun goHome() = startActivity(Intent(this, MainActivity::class.java).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 
     override fun onInterrupt() {}
 
     companion object {
-        /** The bound service, so Plume's switch can turn it off without any permission. */
+        /** The bound service, so the launcher's switch can turn it off without any permission. */
         var running: HomeOverride? = null
             private set
         private const val GOOGLE_TV = "com.google.android.apps.tv.launcherx"

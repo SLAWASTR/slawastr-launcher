@@ -45,7 +45,7 @@ internal class UploadServer(val code: String, private val temp: File, private va
             try {
                 s.use { handle(it) }
             } catch (e: Exception) {
-                android.util.Log.w("Plume", "upload request failed ($e)")
+                android.util.Log.w("slawastr", "upload request failed ($e)")
             }
         }
     }
@@ -112,7 +112,7 @@ internal class UploadServer(val code: String, private val temp: File, private va
         val PAGE = """
             <!doctype html>
             <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-            <title>Plume Wallpaper Upload</title>
+            <title>slawastr\'s launcher · Загрузка обоев</title>
             <style>
               body{font:17px system-ui,-apple-system,sans-serif;margin:0;padding:32px 20px;background:#f7f8fa;color:#111214;text-align:center}
               @media (prefers-color-scheme:dark){body{background:#09090b;color:#f5f5f7}}
