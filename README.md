@@ -1,48 +1,63 @@
 <h1 align="center">slawastr's launcher</h1>
 
 <p align="center">
-  <em>Sleek, glassmorphic and ultra-minimal home screen for Android TV and Google TV.</em>
+  <em>Элегантный, стеклянный и сверхбыстрый рабочий стол для Android TV и Google TV.</em>
 </p>
 
 <p align="center">
+  <img alt="Версия 1.1" src="https://img.shields.io/badge/version-1.1-brightgreen">
   <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3ddc84">
-  <img alt="APK size" src="https://img.shields.io/badge/APK-1.4%20MB-blue">
-  <a href="LICENSE"><img alt="GPL-3.0 License" src="https://img.shields.io/badge/license-GPL--3.0-orange"></a>
+  <img alt="Размер APK" src="https://img.shields.io/badge/APK-1.3%20MB-blue">
+  <img alt="Автор" src="https://img.shields.io/badge/author-slawastr-blueviolet">
+  <a href="LICENSE"><img alt="Лицензия GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-orange"></a>
 </p>
+
+---
 
 <p align="center">
-  <img src="docs/slawastr_launcher_home.png" alt="slawastr's launcher on TV" width="90%">
+  <img src="docs/slawastr_launcher_home.png" alt="Главный экран slawastr's launcher" width="95%">
 </p>
 
-**slawastr's launcher** is a custom, performance-focused fork of [Plume Launcher](https://github.com/aradhyas8/Plume_Launcher) tailored for high-end TV setups (TCL, Google TV, Android TV). It pairs the lightning-fast responsiveness of Plume with a customized frosted glass UI, rounded floating settings card design, and out-of-the-box defaults.
+## 📸 Скриншоты версии 1.1
+
+<p align="center">
+  <img src="docs/settings_menu_v11.png" alt="Плавающее меню настроек" width="32%">
+  <img src="docs/qr_author_support.png" alt="QR-код поддержки автора" width="32%">
+  <img src="docs/qr_wallpapers.png" alt="QR-код оригиналов обоев" width="32%">
+</p>
 
 ---
 
-## ✨ Features & Customizations
+## ✨ Особенности и кастомизации slawastr's launcher
 
-- **Floating Glass Settings Menu:** Completely reworked settings layout featuring a floating 400dp side-card with 28dp rounded corners, translucent frosted backdrop, and 24dp pill-shaped interactive rows.
-- **Preconfigured Defaults on Install:**
-  - **Theme:** Dark Glass style with 15% blur
-  - **Typography:** Bold interface font with left-aligned header layout
-  - **App Row:** Focused icon labels, high-contrast monochrome & branded icons
-  - **Weather:** Enabled by default (Saint Petersburg, °C)
-  - **Wallpaper:** Manual vertical positioning (-20% offset) & top gradient fade
-- **Additional App Icons:** Native support for Kinopoisk, Rutube, V2Ray/v2rayNG, along with HDMI inputs (PlayStation, Xbox).
-- **Home Button Control:** Works as exclusive Home launcher, seamlessly overriding bloated system launchers.
-- **Zero Bloat & Ads:** No tracking, no background crawlers, minimal RAM usage (~50–70 MB).
+- **Версия:** 1.1 | **Автор:** `slawastr`
+- **Плавающее стеклянное меню настроек (Glass Floating Card):**  
+  Полностью переработанная боковая карточка 400dp с закруглениями 28dp, эффектом матового стекла и 24dp интерактивными кнопками-пилюлями.
+- **Встроенные QR-коды прямо в интерфейсе:**
+  - 💳 **Поддержка автора:** Быстрый перевод по СБП (Ozon Банк) при сканировании камерой телефона.
+  - 📷 **Оригиналы фоток с обоев:** Прямой переход в официальный Telegram-канал автора [**@slawastrsphotos**](https://t.me/slawastrsphotos) с фотографиями в исходном разрешении.
+- **Готовые настройки «из коробки» (Default Presets):**
+  - Тема: Тёмное стекло (*Dark Glass*) с 15% размытием подложки.
+  - Типографика: Четкий жирный шрифт с левым выравниванием виджета времени и погоды.
+  - Строка приложений: Подписи при наведении фокуса, высококонтрастные монохромные и цветные иконки.
+  - Погода: Санкт-Петербург, градусы Цельсия.
+  - Обои: Оптимальное кадрирование (-20% по вертикали) с мягким верхним градиентным затемнением.
+- **Дополнительные брендовые иконки:**  
+  Встроенная поддержка Кинопоиска, Rutube, V2Ray/v2rayNG, а также физических HDMI-входов (PlayStation, Xbox).
+- **Экстремальная легковесность:**  
+  Размер APK всего 1.3 МБ, оперативная память ~50–65 МБ, время запуска приложений 95 мс. Полное отсутствие рекламы, телеметрии и сторонних фреймворков.
 
 ---
 
-## 📥 Installation
+## 📥 Установка на телевизор
 
-1. Grab the latest `slawastr_launcher.apk` from the [Releases](https://github.com/SLAWASTR/slawastr-launcher/releases) tab.
-2. Install via ADB:
+1. Скачайте свежий `slawastr_launcher.apk` со страницы [**Releases**](https://github.com/SLAWASTR/slawastr-launcher/releases).
+2. Установите через ADB:
    ```bash
-   adb install slawastr_launcher.apk
+   adb connect <IP_ТЕЛЕВИЗОРА>:5555
+   adb install -r slawastr_launcher.apk
    ```
-   *(Or transfer to a USB drive / use the Downloader app on your TV)*
-
-3. *(Optional)* To permanently disable the default Google TV launcher and make **slawastr's launcher** the primary screen:
+3. Зафиксируйте **slawastr's launcher** в качестве единственного главного экрана и отключите рекламу Google TV:
    ```bash
    adb shell cmd role add-role-holder --user 0 android.app.role.HOME dev.plume
    adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
@@ -51,19 +66,69 @@
 
 ---
 
-## 🛠️ Building from Source
+## 🧹 Очистка телевизора от системного мусора (Debloat)
 
-This project uses standard Gradle & Android SDK:
+Телевизоры TCL и устройства на Google TV нагружены десятками фоновых сервисов сбора телеметрии, рекламы и тяжелых процессов.
 
-```bash
-git clone https://github.com/SLAWASTR/slawastr-launcher.git
-cd slawastr-launcher
-./gradlew assembleDebug
-```
-The output APK will be placed under `app/build/outputs/apk/debug/app-debug.apk`.
+> [!TIP]
+> **Лучше и безопаснее всего проводить деблоатинг через ИИ-ассистента в режиме парного программирования!**  
+> ИИ анализирует реальный список пакетов вашей конкретной ревизии прошивки, проверяет скрытые зависимости (например, чтобы случайно не сломать HDMI-CEC или пульт ДУ) и использует безопасный флаг `disable-user`, который позволяет вернуть любой процесс обратно без сброса настроек.
+>
+> 📖 Подробное пошаговое руководство с полным списком безопасных пакетов: [**docs/DEBLOAT_GUIDE.md**](docs/DEBLOAT_GUIDE.md).
 
 ---
 
-## 📄 License
+## 🚀 Инструкция: Как собирать и заливать обновления на GitHub
 
-GPL-3.0 License. Based on [Plume Launcher](https://github.com/aradhyas8/Plume_Launcher) by aradhyas8.
+### 1. Сборка APK из исходников
+```bash
+# Чистая сборка APK в режиме Release/Debug
+./gradlew clean assembleDebug
+```
+Готовый файл появится по пути: `app/build/outputs/apk/debug/app-debug.apk`.
+
+### 2. Фиксация изменений в Git и отправка в репозиторий
+```bash
+# Проверяем измененные файлы
+git status
+
+# Добавляем все изменения
+git add .
+
+# Делаем коммит
+git commit -m "Релиз v1.1: кнопки поддержки автора (Ozon) и канал обоев (@slawastrsphotos)"
+
+# Отправляем изменения в ветку main
+git push origin main
+```
+
+### 3. Создание релиза с прикреплением APK через GitHub API / CLI
+```bash
+# Создание тега и отправка на GitHub
+git tag -a v1.1.0 -m "slawastr's launcher v1.1"
+git push origin v1.1.0
+```
+Затем на странице [GitHub Releases](https://github.com/SLAWASTR/slawastr-launcher/releases/new) прикрепите скомпилированный `slawastr_launcher.apk`.
+
+---
+
+## 🤖 Промпт для ИИ от ИИ
+
+Если вы хотите передать проект другой языковой модели для доработки, скопируйте готовый системный промпт из файла:  
+👉 [**docs/AI_PROMPT.md**](docs/AI_PROMPT.md)
+
+В нем собраны архитектурные правила кодовой базы (Zero Dependencies, нативный Android View, особенности Gradle-сборки, структура кастомного стеклянного меню и интеграции с ADB).
+
+---
+
+## ☕ Поддержка автора и контакты
+
+- 💳 **Поддержка проекта (СБП Ozon Банк):** [Перевести через Ozon](https://finance.ozon.ru/apps/sbp/ozonbankpay/01a155d9-e962-7ffe-aa0c-ac329362226c?attempt=1)
+- 📷 **Оригиналы фоток с обоев (Telegram):** [**@slawastrsphotos**](https://t.me/slawastrsphotos)
+- 👤 **Автор:** **slawastr**
+
+---
+
+## 📄 Лицензия
+
+GPL-3.0 License. Форк проекта [Plume Launcher](https://github.com/aradhyas8/Plume_Launcher) от aradhyas8.

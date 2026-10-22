@@ -596,6 +596,33 @@ class MainActivity : Activity() {
         getString(if (homeServiceOn()) R.string.setup_done_body_service else R.string.setup_done_body), null,
         getString(R.string.setup_done) to { setupDialog?.dismiss() })
 
+    private fun showQrModal(title: String, subtitle: String, url: String, footerText: String) {
+        val qrSize = dp(160)
+        val qrContainer = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding(0, dp(14), 0, dp(8))
+
+            val iv = ImageView(this@MainActivity).apply {
+                setImageBitmap(qrBitmap(url, qrSize))
+                setPadding(dp(8), dp(8), dp(8), dp(8))
+                background = GradientDrawable().apply {
+                    cornerRadius = dp(14).toFloat()
+                    setColor(Color.WHITE)
+                }
+            }
+            addView(iv, LinearLayout.LayoutParams(qrSize, qrSize))
+
+            addView(label(footerText, 14f).apply {
+                setTypeface(typeface, Typeface.BOLD)
+                gravity = Gravity.CENTER
+                setPadding(0, dp(12), 0, 0)
+                secondary(0.9f)
+            })
+        }
+        homePopup(0, title, subtitle, qrContainer, getString(R.string.setup_close) to { setupDialog?.dismiss() })
+    }
+
     /** A card in the middle of the screen over the dimmed home screen, in the hold menus' colours. */
     private fun homePopup(step: Int, title: String, body: String?, extra: View?, vararg buttons: Pair<String, () -> Unit>) {
         setupDialog?.let { setupDialog = null; it.dismiss() } // replaced, not closed: the dismiss listener leaves the flow alone
@@ -1862,6 +1889,32 @@ class MainActivity : Activity() {
         }
         val top = sections.map { (key, value, keys) -> key to page(getString(key), "$value  ›") { renderSettings(keys[0]) } } +
             listOf(R.string.updates, R.string.lock_layout).map { it to rows[it]!! } +
+            listOf(
+                R.string.author_support to page(getString(R.string.author_support), "Ozon Банк · СБП") {
+                    showQrModal(
+                        getString(R.string.author_support),
+                        getString(R.string.author_support_desc),
+                        "https://finance.ozon.ru/apps/sbp/ozonbankpay/01a155d9-e962-7ffe-aa0c-ac329362226c?attempt=1",
+                        "Ozon Банк · СБП"
+                    )
+                },
+                R.string.wallpaper_photos to page(getString(R.string.wallpaper_photos), "@slawastrsphotos") {
+                    showQrModal(
+                        getString(R.string.wallpaper_photos),
+                        getString(R.string.wallpaper_photos_desc),
+                        "https://t.me/slawastrsphotos",
+                        "@slawastrsphotos"
+                    )
+                },
+                R.string.about_launcher to page(getString(R.string.about_launcher), getString(R.string.author_name)) {
+                    showQrModal(
+                        getString(R.string.about_launcher),
+                        "${getString(R.string.author_name)}\nTelegram: @slawastrsphotos",
+                        "https://t.me/slawastrsphotos",
+                        "@slawastrsphotos"
+                    )
+                }
+            ) +
             listOfNotNull(if (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE == 0) null
                 else R.string.preview_home_setup to page(getString(R.string.preview_home_setup)) { closeLauncherSettings(); previewHomeSetup() })
         showPage(getString(R.string.plume_settings), top.map { it.second }, maxOf(0, top.indexOfFirst { it.first == at }), back = null)

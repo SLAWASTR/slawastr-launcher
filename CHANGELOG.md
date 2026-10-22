@@ -16,6 +16,13 @@ Put changes that are not released under `## Unreleased`. Rename that heading to 
 
 ## Unreleased
 
+## 1.1
+
+### New
+- **Support the author.** Scan QR code to support slawastr via Ozon Bank (SBP).
+- **Original wallpapers.** Scan QR code to view wallpaper photos on Telegram @slawastrsphotos.
+- **Floating glass settings.** Rounded 28dp card with 24dp pill rows for modern TVs.
+
 ## 1.4
 
 ### Smaller

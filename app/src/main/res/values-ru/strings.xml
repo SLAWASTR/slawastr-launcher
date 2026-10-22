@@ -230,4 +230,10 @@
     <string name="section_weather">Погода</string>
     <string name="section_screensaver">Заставка</string>
     <string name="section_home">Кнопка Домой</string>
+    <string name="author_support">Поддержка автора</string>
+    <string name="author_support_desc">Сканируйте QR для перевода по СБП (Ozon Банк)</string>
+    <string name="wallpaper_photos">Оригиналы фоток с обоев</string>
+    <string name="wallpaper_photos_desc">Telegram-канал с оригинальными фото обоев</string>
+    <string name="about_launcher">slawastr\'s launcher v1.1</string>
+    <string name="author_name">Автор: slawastr</string>
 </resources>

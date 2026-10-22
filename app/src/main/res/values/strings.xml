@@ -230,4 +230,10 @@
     <string name="section_weather">Weather</string>
     <string name="section_screensaver">Screensaver</string>
     <string name="section_home">Home button</string>
+    <string name="author_support">Support the author</string>
+    <string name="author_support_desc">Scan QR to support via SBP (Ozon Bank)</string>
+    <string name="wallpaper_photos">Original wallpapers</string>
+    <string name="wallpaper_photos_desc">Telegram channel with original wallpaper photos</string>
+    <string name="about_launcher">slawastr\'s launcher v1.1</string>
+    <string name="author_name">Author: slawastr</string>
 </resources>
